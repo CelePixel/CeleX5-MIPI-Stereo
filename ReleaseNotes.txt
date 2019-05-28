@@ -1,0 +1,61 @@
+CeleX-5 MP Stereo SDK Version 1.1
+Released Date: 2019-05-27
+
+New Features:
+1) Added support for ROS kinetic environment under ubuntu 16.04.
+2) Added support for getting a linearly increased timestamp.
+
+Bug Fixed:
+1) Fixed the bug that Master Sensor and Slave Sensor are not synchronized.
+2) Fixed the bug that playing two bin files is not synchronized.
+3) Optimized the issue that the sensor starts slowly.
+4) Optimized the issue of stuck when the sensor starts.
+
+**********************************************************************************************************
+CeleX-5 MP Stereo SDK Version 1.0
+Released Date: 2019-04-12
+
+New Features:
+1) Added support for CeleX-5 Stereo Sensor.
+2) Added support for MIPI data output.
+3) Added support for fixed mode.
+4) Added support for adjusting the brightness automatically.
+5) Added interfaces to obtain data (full-frame pic, event pic and full-frame optical-flow pic) of the CeleX-5 Sensor.
+6) Added OpenCV-based interfaces to obtain data (full-frame pic, event pic and full-frame optical-flow pic) of the CeleX-5 Sensor.
+7) Added interfaces to control CeleX-5 Sensor (clock, brightness, threshold, ISO)
+8) Added interface to get IMU data.
+9) Added interface to disable outputting data for the specified rows (modify sensor image resolution).
+10) Added support for pausing and replaying a bin file (Playback Functions for DemoGUI).
+11) Added support for displaying device information.
+12) Added support for whether to display images while recording.
+13) Added show by time mode, show by count mode and show by row cycle mode.
+14) Added support for converting bin file to csv.
+15) Added support for rotating picture;
+16) Added support for recording video and converting bin file to video;
+
+Bug Fixed:
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+SDK Development Environment:
+ 
+Windows
+   + Windows 7, 8£¬10 (x32 / x64)
+   + VS2015
+   + OpenCV 3.3.0
+   + qt-msvc2015-5.6.3
+ 
+Linux (Ubuntu 16.04 LTS x64)
+   + Linux 4.4.0-31-generic
+   + g++ 4.8.4
+   + C++
+   + OpenCV 3.3.0
+ 
+Linux (Ubuntu 18.04 LTS x64)
+   + Linux 4.13.0-32-generic
+   + g++ 5.4.0
+   + C++
+   + OpenCV 3.3.0
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+

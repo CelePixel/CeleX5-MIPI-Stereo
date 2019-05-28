@@ -1,0 +1,7 @@
+<launch>
+  <node name="celex_ros_callback" pkg="celex5_stereo" type="celex5_stereo_callback_node" output="screen" >
+    <param name="celex_mode" value="Event_Optical_Flow_Mode" />
+    <param name="threshold" value="170" />
+    <param name="clock_rate" value="100" />
+  </node>
+</launch>
