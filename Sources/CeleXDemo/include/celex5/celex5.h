@@ -359,8 +359,8 @@ public:
 	/*
 	* Sensor Configures
 	*/
-	map<string, vector<CfgInfo>> getCeleX5Cfg();
-	map<string, vector<CfgInfo>> getCeleX5CfgModified();
+	map<string, vector<CfgInfo> > getCeleX5Cfg();
+	map<string, vector<CfgInfo> > getCeleX5CfgModified();
 	void writeRegister(int16_t addressH, int16_t addressM, int16_t addressL, uint32_t value, int device_index = 0);
 	CfgInfo getCfgInfoByName(string csrType, string name, bool bDefault);
 	void writeCSRDefaults(string csrType, int device_index = 0);
@@ -386,8 +386,8 @@ private:
 	DataProcessThreadEx*           m_pDataProcessThread[MAX_SENSOR_NUM];
 	DataRecorder*                  m_pDataRecorder[MAX_SENSOR_NUM];
 	//
-	map<string, vector<CfgInfo>>   m_mapCfgDefaults;
-	map<string, vector<CfgInfo>>   m_mapCfgModified;
+	map<string, vector<CfgInfo> >   m_mapCfgDefaults;
+	map<string, vector<CfgInfo> >   m_mapCfgModified;
 	//
 	unsigned char*                 m_pReadBuffer;
 	uint8_t*                       m_pDataToRead;
