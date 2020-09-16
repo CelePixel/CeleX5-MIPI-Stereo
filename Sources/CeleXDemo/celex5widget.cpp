@@ -751,20 +751,21 @@ void CeleX5Widget::closeEvent(QCloseEvent *)
     }
 }
 
+QStringList g_qsBinFilePathList;
 void CeleX5Widget::playback(QPushButton *pButton)
 {
     if ("Playback" == pButton->text())
     {
-        QStringList filePathList = QFileDialog::getOpenFileNames(this, "Open a bin file", QCoreApplication::applicationDirPath(), "Bin Files (*.bin)");
+        g_qsBinFilePathList = QFileDialog::getOpenFileNames(this, "Open a bin file", QCoreApplication::applicationDirPath(), "Bin Files (*.bin)");
         //qDebug() << __FUNCTION__ << filePathList << endl;
         bool bPlaybackSuccess = false;
-        for (int i = 0; i < filePathList.size(); i++)
+        for (int i = 0; i < g_qsBinFilePathList.size(); i++)
         {
-            QStringList nameList = filePathList[0].split("/");
+            QStringList nameList = g_qsBinFilePathList[0].split("/");
             g_qsBinFileName = nameList[nameList.size()-1];
             g_qsBinFileName = g_qsBinFileName.left(g_qsBinFileName.size()-6);
             //qDebug() << __FUNCTION__ << g_qsBinFileName << endl;
-            QString filePath = filePathList[i];
+            QString filePath = g_qsBinFilePathList[i];
             if (filePath.isEmpty())
                 return;
             if (m_pCeleX5->openBinFile(filePath.toStdString(), i))
@@ -1536,8 +1537,11 @@ void CeleX5Widget::onReadBinTimer()
         //        {
 
         //        }
-        if(m_pSensorDataObserver->getDisplayType() == ConvertBin2Video||m_pSensorDataObserver->getDisplayType() == ConvertBin2CSV)
+        if (m_pSensorDataObserver->getDisplayType() == ConvertBin2Video ||
+            m_pSensorDataObserver->getDisplayType() == ConvertBin2CSV)
+        {
             m_pCeleX5->readBinFileData(0);
+        }
         else
         {
             m_pCeleX5->readBinFileData(0);
@@ -1608,11 +1612,46 @@ void CeleX5Widget::onBtnPlayPauseReleased()
 
 void CeleX5Widget::onBtnReplayRelease()
 {
-    m_pReadBinTimer->stop();
-    setCurrentPackageNo(0);
-    m_pCeleX5->replay();
-    m_pReadBinTimer->start(READ_BIN_TIME);
-    m_pUpdatePlayInfoTimer->start(UPDATE_PLAY_INFO_TIME);
+//    m_pReadBinTimer->stop();
+//    setCurrentPackageNo(0);
+//    m_pCeleX5->replay();
+//    m_pReadBinTimer->start(READ_BIN_TIME);
+//    m_pUpdatePlayInfoTimer->start(UPDATE_PLAY_INFO_TIME);
+//    m_pCeleX5->alignBinFileData();
+
+    m_pSensorDataObserver->setDisplayType(Realtime);
+    m_pCeleX5->play();
+#ifdef _WIN32
+        Sleep(500);
+#else
+        usleep(500000);
+#endif
+
+    //g_qsBinFilePathList = QFileDialog::getOpenFileNames(this, "Open a bin file", QCoreApplication::applicationDirPath(), "Bin Files (*.bin)");
+    //qDebug() << __FUNCTION__ << g_qsBinFilePathList << endl;
+    bool bPlaybackSuccess = false;
+    for (int i = 0; i < g_qsBinFilePathList.size(); i++)
+    {
+        QStringList nameList = g_qsBinFilePathList[0].split("/");
+        g_qsBinFileName = nameList[nameList.size()-1];
+        g_qsBinFileName = g_qsBinFileName.left(g_qsBinFileName.size()-6);
+        //qDebug() << __FUNCTION__ << g_qsBinFileName << endl;
+        QString filePath = g_qsBinFilePathList[i];
+        if (filePath.isEmpty())
+            return;
+        if (m_pCeleX5->openBinFile(filePath.toStdString(), i))
+        {
+            bPlaybackSuccess = true;
+        }
+    }
+    if (bPlaybackSuccess)
+    {
+        m_pSensorDataObserver->setDisplayType(Playback);
+        m_pReadBinTimer->start(READ_BIN_TIME);
+        m_pUpdatePlayInfoTimer->start(UPDATE_PLAY_INFO_TIME);
+
+        m_pCeleX5->alignBinFileData();
+    }
 }
 
 void CeleX5Widget::onBtnSavePicReleased()
@@ -1651,7 +1690,6 @@ void CeleX5Widget::onBtnSavePicExReleased()
     else
     {
         onBtnReplayRelease();
-        m_pCeleX5->alignBinFileData();
         g_lFrameCount_M = 0;
         g_lFrameCount_S = 0;
         m_pSensorDataObserver->setSaveBmp(true);
